@@ -1,0 +1,36 @@
+package Entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "Users")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class User {
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false, length = 50, unique = true)
+    private String username;
+
+    @Column(nullable = false, length = 50)
+    private String password;
+
+    @Column(length = 50)
+    private String fullname;
+
+    @Column(name = "DiaChi", nullable = false, length = 50)
+    private String diaChi;
+
+    @Column(name = "SDT", nullable = false, length = 50)
+    private String sdt;
+
+    @Column(name = "roleID")
+    private Integer roleID;
+
+    @Column(length = 50)
+    private String email;
+}

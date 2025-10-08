@@ -1,0 +1,96 @@
+package Service.Impl;
+
+import java.util.List;
+import java.util.Optional;
+
+import Dao.UserDao;
+import Dao.Impl.UserDaoImpl;
+import Entity.User;
+import Service.UserService;
+
+public class UserServiceImpl implements UserService{
+
+	UserDao dao = new UserDaoImpl();
+	
+	@Override
+	public User create(User user) {
+		if (dao.existsByUsername(user.getUsername().trim())) {
+            throw new RuntimeException("Tên đăng nhập đã tồn tại");
+        }
+		
+		return dao.create(user);
+	}
+
+	@Override
+	public Optional<User> findById(Integer id) {
+		return dao.findById(id);
+	}
+
+	@Override
+	public Optional<User> findByUsername(String username) {
+		return dao.findByUsername(username);
+	}
+
+	@Override
+	public List<User> findAll() {
+		return dao.findAll();
+	}
+
+	@Override
+	public List<User> findAll(int page, int size) {
+		return dao.findAll(page, size);
+	}
+
+	@Override
+	public long count() {
+		return dao.count();
+	}
+
+	@Override
+	public User update(User user) {
+		if (user == null || user.getId() == null)
+            throw new IllegalArgumentException("User/id must not be null");
+
+        // Nếu username thay đổi, kiểm tra trùng
+        Optional<User> current = dao.findById(user.getId());
+        if (current.isEmpty()) {
+            throw new RuntimeException("User không tồn tại");
+        }
+        
+        String newUsername = user.getUsername();
+        if (newUsername != null && !newUsername.isBlank()
+                && !newUsername.equals(current.get().getUsername())
+                && dao.existsByUsername(newUsername.trim())) {
+            throw new RuntimeException("Tên đăng nhập đã tồn tại");
+        }
+
+        return dao.update(user);
+	}
+
+	@Override
+	public boolean deleteById(Integer id) {
+		if (id == null) return false;
+        return dao.deleteById(id);
+	}
+
+	@Override
+	public boolean existsByUsername(String username) {
+		if (username == null) return false;
+        return dao.existsByUsername(username.trim());
+	}
+
+	
+	//Method đăng nhập vào hệ thống
+	@Override
+	public User login(String username, String password) {
+		Optional<User> opt = this.findByUsername(username);
+	    if (opt.isPresent()) {
+	        User user = opt.get();
+	        if (password.equals(user.getPassword())) {
+	            return user;
+	        }
+	    }
+	    return null;
+	}
+
+}
