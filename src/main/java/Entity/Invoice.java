@@ -1,10 +1,10 @@
 package Entity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.Date;
 
 @Entity
 @Table(name = "Invoices")
@@ -24,6 +24,7 @@ public class Invoice {
     @Column(name = "NguoiDungID", nullable = false)
     private int nguoiDungID;
 
+    // Liên kết với Product
     @ManyToOne
     @JoinColumn(name = "SanPhamID", nullable = false)
     private Product product;
@@ -31,10 +32,11 @@ public class Invoice {
     @Column(name = "SoLuong", nullable = false)
     private int soLuong;
 
-    @Column(name = "DonGia", precision = 18, scale = 2)
+    @Column(name = "DonGia", precision = 18, scale = 2, nullable = false)
     private BigDecimal donGia;
 
-    @Column(name = "TongTien", precision = 18, scale = 2)
+    // 👇 computed column: Hibernate chỉ đọc, không ghi
+    @Column(name = "TongTien", precision = 18, scale = 2, insertable = false, updatable = false)
     private BigDecimal tongTien;
 
     @Column(name = "GhiChu")
