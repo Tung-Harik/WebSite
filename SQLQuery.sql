@@ -58,3 +58,6 @@ BEGIN
 END;
 
 
+INSERT INTO Role VALUES (1, N'Admin');
+INSERT INTO Users(username, [password], fullname, DiaChi, SDT, roleID, email)
+VALUES ('admin', '123456', N'Lê Nghĩa Tình', N'Thủ Đức', N'0943512459', 1, 'nghiatinh2002@gmail.com');
