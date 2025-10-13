@@ -22,7 +22,7 @@
       </c:if>
 
       <!-- Đăng ký -->
-      <form method="post" action="${pageContext.request.contextPath}/signin" novalidate>
+      <form method="post" action="${pageContext.request.contextPath}/register" novalidate>
         <!-- username -->
         <div class="mb-3">
           <label for="username" class="form-label">Tên đăng nhập *</label>
@@ -51,12 +51,12 @@
         <div class="row">
           <div class="col-md-8 mb-3">
             <label for="diachi" class="form-label">Địa chỉ *</label>
-            <input type="text" id="diachi" name="DiaChi" class="form-control"
+            <input type="text" id="diachi" name="diachi" class="form-control"
                    required maxlength="50" placeholder="Số nhà, đường, quận/huyện">
           </div>
           <div class="col-md-4 mb-3">
             <label for="sdt" class="form-label">SĐT *</label>
-            <input type="tel" id="sdt" name="SDT" class="form-control"
+            <input type="tel" id="sdt" name="sdt" class="form-control"
                    required maxlength="50" placeholder="0xxxxxxxxx"
                    pattern="^[0-9+\-\s]{8,15}$"
                    title="Chỉ số, dấu +, -, khoảng trắng (8–15 ký tự)">

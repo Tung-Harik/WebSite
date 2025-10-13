@@ -3,6 +3,8 @@ package Service.Impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import Dao.UserDao;
 import Dao.Impl.UserDaoImpl;
 import Entity.User;
@@ -83,14 +85,11 @@ public class UserServiceImpl implements UserService{
 	//Method đăng nhập vào hệ thống
 	@Override
 	public User login(String username, String password) {
-		Optional<User> opt = this.findByUsername(username);
-	    if (opt.isPresent()) {
-	        User user = opt.get();
-	        if (password.equals(user.getPassword())) {
-	            return user;
-	        }
-	    }
-	    return null;
+		if (username == null || password == null) return null;
+
+	    return findByUsername(username.trim())
+	        .filter(u -> BCrypt.checkpw(password, u.getPassword()))
+	        .orElse(null);
 	}
 
 }

@@ -22,13 +22,14 @@
         <div class="mb-3">
           <label class="form-label">Tên đăng nhập</label>
           <input type="text" name="username" class="form-control" required
-                 value="${cookie.rememberUser.value}" placeholder="Nhập tên đăng nhập...">
+                 value="${cookie.username.value}" placeholder="Nhập tên đăng nhập...">
         </div>
 
         <div class="mb-3">
           <label class="form-label">Mật khẩu</label>
           <div class="input-group">
-            <input type="password" id="password" name="password" class="form-control" required placeholder="Nhập mật khẩu...">
+            <input type="password" id="password" name="password" class="form-control" required 
+            	value="${cookie.password.value}" placeholder="Nhập mật khẩu...">
             <button type="button" class="btn btn-outline-secondary" onclick="togglePw(this)">Hiện</button>
           </div>
         </div>

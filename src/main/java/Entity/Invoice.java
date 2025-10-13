@@ -3,13 +3,15 @@ package Entity;
 import java.math.BigDecimal;
 import java.util.Date;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "Invoices")
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Invoice {
 
     @Id
@@ -35,7 +37,6 @@ public class Invoice {
     @Column(name = "DonGia", precision = 18, scale = 2, nullable = false)
     private BigDecimal donGia;
 
-    // 👇 computed column: Hibernate chỉ đọc, không ghi
     @Column(name = "TongTien", precision = 18, scale = 2, insertable = false, updatable = false)
     private BigDecimal tongTien;
 
