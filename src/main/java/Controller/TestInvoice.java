@@ -1,29 +1,60 @@
 package Controller;
 
-import Dao.InvoiceDao;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
 import Entity.Invoice;
 import Entity.Product;
-
-import java.math.BigDecimal;
+import Service.InvoiceService;
+import Service.ProductService;
+import Service.Impl.InvoiceServiceImpl;
+import Service.Impl.ProductServiceImpl;
 
 public class TestInvoice {
     public static void main(String[] args) {
-        InvoiceDao dao = new InvoiceDao();
+        InvoiceService invoiceService = new InvoiceServiceImpl();
+        ProductService productService = new ProductServiceImpl();
 
-        // Giả sử sản phẩm đã tồn tại trong DB
+        // Tạo sản phẩm mẫu
         Product product = new Product();
-        product.setId(1); // ID sản phẩm có sẵn trong DB
+        product.setId(101);
+        product.setName("Iphone 16 Pro");
+        product.setPrices(BigDecimal.valueOf(3500.00)); // dùng BigDecimal.valueOf()
+        Product createdProduct = productService.create(product);
 
-        // Tạo hóa đơn mới
+        // Tạo hóa đơn
         Invoice invoice = new Invoice();
-        invoice.setNguoiDungID(1); // ví dụ user có id = 1
-        invoice.setProduct(product);
-        invoice.setSoLuong(3);
-        invoice.setDonGia(new BigDecimal("500.00"));
-        invoice.setGhiChu("Mua 3 cái laptop Dell");
+        invoice.setNguoiDungID(1);
+        invoice.setProduct(createdProduct);
+        invoice.setSoLuong(2);
+        invoice.setDonGia(createdProduct.getPrices()); // không cần BigDecimal.valueOf() nữa
+        invoice.setTongTien(invoice.getDonGia().multiply(BigDecimal.valueOf(invoice.getSoLuong()))); // ✅ đúng cách
+        invoice.setNgayLap(new Date());
+        invoice.setGhiChu("Khách hàng thân thiết");
 
-        dao.create(invoice);
+        Invoice created = invoiceService.create(invoice);
+        System.out.println("Created invoice id: " + created.getId());
 
-        System.out.println("Hóa đơn đã được thêm vào!");
+        // 3️⃣ Tìm hóa đơn theo ID
+        invoiceService.findById(created.getId()).ifPresent(inv ->
+            System.out.println("Found invoice: Tổng tiền = " + inv.getTongTien())
+        );
+
+        // 4️⃣ Cập nhật ghi chú
+        created.setGhiChu("Đã giao hàng");
+        Invoice updated = invoiceService.update(created);
+        System.out.println("Updated note: " + updated.getGhiChu());
+
+        // 5️⃣ Lấy tất cả hóa đơn
+        List<Invoice> all = invoiceService.findAll();
+        System.out.println("All invoices:");
+        all.forEach(i ->
+            System.out.println("   - ID " + i.getId() + " | " + i.getNgayLap() + " | " + i.getTongTien())
+        );
+
+        // 6️⃣ (Tuỳ chọn) Xóa hóa đơn
+        // invoiceService.deleteById(created.getId());
+        // System.out.println("Deleted invoice id " + created.getId());
     }
 }
