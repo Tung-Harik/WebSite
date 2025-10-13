@@ -1,36 +1,41 @@
 package Controller;
 
-import Dao.ProductDao;
-import Entity.Product;
 import java.math.BigDecimal;
+
+import Entity.Product;
+import Service.ProductService;
+import Service.Impl.ProductServiceImpl;
 
 public class TestProduct {
     public static void main(String[] args) {
-        ProductDao dao = new ProductDao();
+        ProductService service = new ProductServiceImpl();
 
-        // Thêm sản phẩm mới
+        // Tạo mới
         Product p = new Product();
-        p.setId(2);
-        p.setName("Laptop Acer");
-        p.setPrices(BigDecimal.valueOf(2000.00));
-        dao.create(p);
+        p.setName("Laptop Dell XPS");
+        p.setPrices(BigDecimal.valueOf(2300.00)); // dùng BigDecimal.valueOf()
 
-        // Lấy ra
-        Product found = dao.findById(1);
-        if (found != null) {
-            System.out.println("Found: " + found.getName() + " - " + found.getPrices());
-        } else {
-            System.out.println("Not found!");
-        }
+        Product created = service.create(p);
+        System.out.println("Created product: " + created.getId() + " - " + created.getName());
+
+        // Tìm theo ID
+        service.findById(created.getId()).ifPresent(prod ->
+            System.out.println("Found: " + prod.getName() + " - $" + prod.getPrices())
+        );
 
         // Cập nhật
-        if (found != null) {
-            found.setPrices(BigDecimal.valueOf(1400.00));
-            dao.update(found);
-            System.out.println("Updated successfully!");
-        }
+        created.setPrices(BigDecimal.valueOf(2100.00)); // sửa tương tự
+        Product updated = service.update(created);
+        System.out.println("Updated price: " + updated.getPrices());
+
+        // Danh sách tất cả sản phẩm
+        System.out.println("All Products:");
+        service.findAll().forEach(prod ->
+            System.out.println("   - " + prod.getId() + ": " + prod.getName() + " ($" + prod.getPrices() + ")")
+        );
 
         // Xóa (nếu muốn)
-        // dao.delete(1);
+        // service.deleteById(created.getId());
+        // System.out.println("Deleted product id " + created.getId());
     }
 }

@@ -1,17 +1,26 @@
-package Dao;
+package Service;
 
 import java.util.List;
 import java.util.Optional;
 
 import Entity.Product;
 
-public interface ProductDao {
+public interface ProductService {
+    // CREATE
     Product create(Product product);
+
+    // READ
     Optional<Product> findById(Integer id);
     List<Product> findAll();
-    List<Product> findAll(int page, int size);
+    List<Product> findAll(int page, int size); // phân trang
     long count();
+
+    // UPDATE
     Product update(Product product);
+
+    // DELETE
     boolean deleteById(Integer id);
-    List<Product> findByNameContaining(String keyword);
+
+    // EXTRA
+    List<Product> findByNameContaining(String keyword); // tìm theo tên gần đúng
 }
