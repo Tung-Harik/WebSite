@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+  <!-- CHỈ ghi tên file, KHÔNG có / -->
+  <mapping path="/user/*" name="user" decorator="user.jsp"/>
+  
+  <mapping path="/admin/*" name="admin" decorator="admin.jsp"/>
+  <mapping path="/manager/*" name="manager" decorator="manager.jsp"/>
+  <mapping path="/v1/api/*" name="api" exclude="true"/>
+  
+  <excludes>
+    <pattern>/login.jsp</pattern>
+    <pattern>/signin.jsp</pattern>
+  </excludes>
+</sitemesh>

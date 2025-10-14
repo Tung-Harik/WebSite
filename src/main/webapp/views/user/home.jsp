@@ -13,50 +13,12 @@
 </head>
 <body class="bg-body-tertiary">
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
-    <div class="container">
-      <a class="navbar-brand fw-semibold" href="${pageContext.request.contextPath}/">
-        <i class="bi bi-hexagon-fill me-2"></i>MyApp
-      </a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div id="navMain" class="collapse navbar-collapse">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/home">
-              <i class="bi bi-house-door me-1"></i>Trang chủ
-            </a>
-          </li>
-          <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/products"><i class="bi bi-bag me-1"></i>Giỏ hàng</a></li>
-          <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/orders"><i class="bi bi-receipt me-1"></i>Đơn hàng</a></li>
-          <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/support"><i class="bi bi-life-preserver me-1"></i>Hỗ trợ</a></li>
-        </ul>
-
-        <div class="d-flex align-items-center gap-3">
-          <span class="text-muted small d-none d-md-inline">
-            Xin chào, <strong>${sessionScope.account.fullname}</strong>
-          </span>
-          <a href="${pageContext.request.contextPath}/user/profile" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-person"></i>
-          </a>
-          <a href="${pageContext.request.contextPath}/logout" class="btn btn-primary btn-sm">
-            <i class="bi bi-box-arrow-right me-1"></i>Đăng xuất
-          </a>
-        </div>
-      </div>
-    </div>
-  </nav>
-
   <!-- Header hero -->
   <header class="bg-primary text-white py-5">
     <div class="container">
       <div class="row align-items-center g-4">
         <div class="col-lg-8">
-          <h1 class="h2 mb-2">Chào mừng trở lại, <span class="fw-bold">${sessionScope.currentUser.fullname}</span>!</h1>
+          <h1 class="h2 mb-2">Chào mừng trở lại, <span class="fw-bold">${sessionScope.account.fullname}</span>!</h1>
           <p class="mb-0 opacity-75">Đây là trang tổng quan nhanh cho tài khoản của bạn.</p>
         </div>
         <div class="col-lg-4 text-lg-end">
@@ -147,9 +109,9 @@
             </div>
             <hr>
             <div class="small">
-              <div class="d-flex justify-content-between py-1"><span>Tên đăng nhập</span><span class="text-muted">${sessionScope.currentUser.username}</span></div>
-              <div class="d-flex justify-content-between py-1"><span>Vai trò</span><span class="text-muted">${sessionScope.currentUser.roleName}</span></div>
-              <div class="d-flex justify-content-between py-1"><span>SĐT</span><span class="text-muted">${sessionScope.currentUser.phone}</span></div>
+              <div class="d-flex justify-content-between py-1"><span>Tên đăng nhập</span><span class="text-muted">${sessionScope.account.username}</span></div>
+              <div class="d-flex justify-content-between py-1"><span>Email</span><span class="text-muted">${sessionScope.account.email}</span></div>
+              <div class="d-flex justify-content-between py-1"><span>SĐT</span><span class="text-muted">${sessionScope.account.sdt}</span></div>
             </div>
           </div>
           <div class="card-footer bg-white">
@@ -191,7 +153,7 @@
             </c:choose>
           </div>
           <div class="card-footer bg-white">
-            <a href="${pageContext.request.contextPath}/products" class="btn btn-primary">
+            <a href="${pageContext.request.contextPath}/home" class="btn btn-primary">
               <i class="bi bi-bag-plus me-1"></i> Bắt đầu mua sắm
             </a>
           </div>
@@ -199,18 +161,6 @@
       </div>
     </section>
   </main>
-
-  <!-- Footer -->
-  <footer class="border-top py-4 bg-white">
-    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-      <div class="small text-muted">© <script>document.write(new Date().getFullYear())</script> MyApp. All rights reserved.</div>
-      <div class="d-flex gap-3 small">
-        <a class="text-decoration-none" href="${pageContext.request.contextPath}/privacy">Bảo mật</a>
-        <a class="text-decoration-none" href="${pageContext.request.contextPath}/terms">Điều khoản</a>
-        <a class="text-decoration-none" href="${pageContext.request.contextPath}/contact">Liên hệ</a>
-      </div>
-    </div>
-  </footer>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
