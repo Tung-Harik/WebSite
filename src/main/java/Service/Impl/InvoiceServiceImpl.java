@@ -57,4 +57,9 @@ public class InvoiceServiceImpl implements InvoiceService {
     public List<Invoice> findByDateRange(Date startDate, Date endDate) {
         return invoiceDao.findByDateRange(startDate, endDate);
     }
+
+	@Override
+	public Invoice getByIdAndUserOrNull(int invoiceId, int userId) {
+		return invoiceDao.getByIdAndUserOrNull(invoiceId, userId);
+	}
 }

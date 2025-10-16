@@ -2,13 +2,11 @@
 <sitemesh>
   <!-- CHỈ ghi tên file, KHÔNG có / -->
   <mapping path="/user/*" name="user" decorator="user.jsp"/>
-  
   <mapping path="/admin/*" name="admin" decorator="admin.jsp"/>
   <mapping path="/manager/*" name="manager" decorator="manager.jsp"/>
-  <mapping path="/v1/api/*" name="api" exclude="true"/>
+  <mapping path="/*" name="web" decorator="web.jsp"/>
   
-  <excludes>
-    <pattern>/login.jsp</pattern>
-    <pattern>/signin.jsp</pattern>
-  </excludes>
+  <mapping path="/v1/api/*" name="api" exclude="true"/>
+  <mapping path="/login" exclude="true"/>
+  <mapping path="/signin" exclude="true"/>
 </sitemesh>

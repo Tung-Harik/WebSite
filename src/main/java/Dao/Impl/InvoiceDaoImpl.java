@@ -10,6 +10,7 @@ import Util.JPAUtil;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
 public class InvoiceDaoImpl implements InvoiceDao {
@@ -139,4 +140,24 @@ public class InvoiceDaoImpl implements InvoiceDao {
             em.close();
         }
     }
+
+	@Override
+	public Invoice getByIdAndUserOrNull(int invoiceId, int userId) {
+		EntityManager em = JPAUtil.getEm();
+        try {
+            String jpql = """
+                SELECT i FROM Invoice i
+                JOIN FETCH i.product p
+                WHERE i.id = :iid AND i.nguoiDungID = :uid
+            """;
+            TypedQuery<Invoice> q = em.createQuery(jpql, Invoice.class);
+            q.setParameter("iid", invoiceId);
+            q.setParameter("uid", userId);
+            return q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+	}
 }

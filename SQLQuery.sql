@@ -63,3 +63,23 @@ INSERT INTO Users(username, [password], fullname, DiaChi, SDT, roleID, email)
 VALUES ('admin', '123456', N'Lê Nghĩa Tình', N'Thủ Đức', N'0943512459', 1, 'nghiatinh2002@gmail.com');
 
 ALTER TABLE dbo.Users ALTER COLUMN password VARCHAR(255) NOT NULL;
+
+
+CREATE TABLE Cart (
+    id INT PRIMARY KEY IDENTITY,
+    user_id INT NOT NULL,
+    created_at DATETIME DEFAULT GETDATE(),
+    is_checked_out BIT DEFAULT 0,  -- 0 = đang mua, 1 = đã thanh toán
+    FOREIGN KEY (user_id) REFERENCES Users(id)
+);
+
+CREATE TABLE CartItems (
+    id INT PRIMARY KEY IDENTITY,
+    cart_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    price DECIMAL(18,2) NOT NULL,        -- lưu giá tại thời điểm thêm vào giỏ
+    FOREIGN KEY (cart_id) REFERENCES Cart(id),
+    FOREIGN KEY (product_id) REFERENCES Products(id)
+);
+

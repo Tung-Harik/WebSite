@@ -3,7 +3,7 @@
 <footer class="border-top py-4 bg-white mt-5">
   <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
     <div class="small text-muted">
-      © <script>document.write(new Date().getFullYear())</script> MyApp. All rights reserved.
+      © <script>document.write(new Date().getFullYear())</script> Website - Shop bán hàng UTE
     </div>
     <div class="d-flex gap-3 small">
       <a class="text-decoration-none" href="${pageContext.request.contextPath}/privacy">Bảo mật</a>

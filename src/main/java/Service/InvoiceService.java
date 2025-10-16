@@ -25,4 +25,6 @@ public interface InvoiceService {
     // EXTRA
     List<Invoice> findByNguoiDungID(int userId); // tìm hóa đơn theo người dùng
     List<Invoice> findByDateRange(Date startDate, Date endDate); // tìm trong khoảng ngày
+    
+    Invoice getByIdAndUserOrNull(int invoiceId, int userId);
 }

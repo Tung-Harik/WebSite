@@ -16,4 +16,6 @@ public interface InvoiceDao {
     boolean deleteById(Integer id);
     List<Invoice> findByNguoiDungID(int userId);
     List<Invoice> findByDateRange(Date startDate, Date endDate);
+    
+    Invoice getByIdAndUserOrNull(int invoiceId, int userId);
 }

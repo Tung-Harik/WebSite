@@ -22,10 +22,24 @@
   </style>
 </head>
 <body class="bg-body-tertiary">
+	<c:if test="${not empty sessionScope.flashSuccess}">
+		<div class="alert alert-success alert-dismissible fade show" role="alert"> ${sessionScope.flashSuccess}
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+		<c:remove var="flashSuccess" scope="session" />
+	</c:if>
 
-  <div class="container py-4">
+	<c:if test="${not empty sessionScope.flashError}">
+		<div class="alert alert-danger alert-dismissible fade show" role="alert"> ${sessionScope.flashError}
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+		<c:remove var="flashError" scope="session" />
+	</c:if>
+
+
+	<div class="container py-4">
     <div class="text-center mb-4">
-      <h1 class="fw-bold">Cửa hàng mỹ phẩm</h1>
+      <h1 class="fw-bold">UTE Shop</h1>
       <p class="text-muted">Khám phá những sản phẩm mới nhất</p>
     </div>
 
@@ -34,21 +48,43 @@
         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
           <div class="card h-100 shadow-sm border-0">
             <!-- Ảnh sản phẩm -->
-            <img src="${pageContext.request.contextPath}/assets/img/products/${imgById[p.id]}"
-     				alt="${p.name}" class="card-img-top" style="height:220px;object-fit:cover;">
+            <div class="card h-100 shadow-sm border-0">
+  <a class="text-decoration-none" 
+     href="${pageContext.request.contextPath}/product/detail?id=${p.id}">
+    <img src="${pageContext.request.contextPath}/assets/img/products/${imgById[p.id]}"
+         alt="${p.name}" class="card-img-top" style="height:220px;object-fit:cover;">
+  </a>
 
+  <div class="card-body text-center">
+    <h6 class="card-title text-truncate" title="${p.name}">
+      <a class="text-decoration-none text-dark"
+         href="${pageContext.request.contextPath}/product/detail?id=${p.id}">
+        ${p.name}
+      </a>
+    </h6>
+    <p class="fw-bold text-danger mb-2">
+      <fmt:formatNumber value="${p.prices}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
+    </p>
 
-            <div class="card-body text-center">
-              <h6 class="card-title text-truncate" title="${p.name}">
-                ${p.name}
-              </h6>
-              <p class="fw-bold text-danger mb-2">
-                <fmt:formatNumber value="${p.prices}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
-              </p>
-              <a href="#" class="btn btn-outline-primary btn-sm">
-                <i class="bi bi-cart-plus me-1"></i>Thêm vào giỏ
-              </a>
-            </div>
+    <div class="d-grid gap-2">
+      <a href="${pageContext.request.contextPath}/product/detail?id=${p.id}"
+         class="btn btn-primary btn-sm">
+        Xem chi tiết
+      </a>
+
+      <!-- Tuỳ chọn: thêm ngay vào giỏ -->
+      <form action="${pageContext.request.contextPath}/user/cart/add" method="post" class="d-grid">
+        <input type="hidden" name="productId" value="${p.id}">
+        <input type="hidden" name="quantity" value="1">
+        <button type="submit" class="btn btn-outline-primary btn-sm">
+          Thêm vào giỏ
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+            
+            
           </div>
         </div>
       </c:forEach>

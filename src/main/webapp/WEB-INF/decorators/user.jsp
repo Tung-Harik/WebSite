@@ -10,9 +10,11 @@
 </head>
 <body>
     <jsp:include page="/commons/user/header.jsp"/>
+    
     <main class="container my-4">
         <sitemesh:write property="body"/>
     </main>
+    
     <jsp:include page="/commons/user/footer.jsp"/>
 </body>
 </html>

@@ -15,7 +15,7 @@
     <div id="navMain" class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto">
         <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/home"><i class="bi bi-house-door me-1"></i>Trang chủ</a></li>
-        <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/user/products"><i class="bi bi-bag me-1"></i>Giỏ hàng</a></li>
+        <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/user/cart"><i class="bi bi-bag me-1"></i>Giỏ hàng</a></li>
         <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/user/orders"><i class="bi bi-receipt me-1"></i>Đơn hàng</a></li>
       </ul>
       <div class="d-flex align-items-center gap-3">
