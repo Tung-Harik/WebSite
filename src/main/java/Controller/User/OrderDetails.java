@@ -42,7 +42,7 @@ public class OrderDetails extends HttpServlet{
                 return;
             }
             req.setAttribute("order", inv);
-            req.getRequestDispatcher("/views/user/order-detail.jsp").forward(req, resp);
+            req.getRequestDispatcher("/views/user/order-details.jsp").forward(req, resp);
         } catch (NumberFormatException e) {
             resp.sendRedirect(req.getContextPath() + "/user/orders");
         }

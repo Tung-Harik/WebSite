@@ -6,7 +6,7 @@
 
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
   <div class="container">
-    <a class="navbar-brand fw-semibold" href="${pageContext.request.contextPath}/">
+    <a class="navbar-brand fw-semibold" href="${pageContext.request.contextPath}/user/home">
       <i class="bi bi-hexagon-fill me-2"></i>MyApp
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">

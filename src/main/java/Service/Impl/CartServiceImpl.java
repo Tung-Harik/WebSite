@@ -1,16 +1,20 @@
 package Service.Impl;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import Dao.CartDao;
 import Dao.Impl.CartDaoImpl;
 import Entity.Cart;
 import Entity.CartItems;
+import Entity.Invoice;
 import Entity.Product;
 import Entity.User;
 import Service.CartService;
 import Util.JPAUtil;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 
 public class CartServiceImpl implements CartService{
 
@@ -129,26 +133,56 @@ public class CartServiceImpl implements CartService{
 	@Override
 	public void checkout(int userId) {
 		EntityManager em = JPAUtil.getEm();
-        try {
-            em.getTransaction().begin();
-            Cart cart = cartDao.findActiveByUserId(userId).orElse(null);
-            if (cart == null) {
-                em.getTransaction().rollback();
-                return;
-            }
-            Cart managed = em.merge(cart);
-            managed.setCheckedOut(true);
+	    EntityTransaction tx = em.getTransaction();
+	    
+	    try {
+	      tx.begin();
 
-            // TODO: tại đây bạn có thể tạo Order/Invoice từ managed.getItems()
-            // và trừ tồn kho, ghi nhận thanh toán...
+	      // Lấy cart đang mở kèm items + product trong CÙNG EM
+	      Cart cart = em.createQuery("""
+	          SELECT c FROM Cart c
+	          LEFT JOIN FETCH c.items it
+	          LEFT JOIN FETCH it.product p
+	          WHERE c.user.id = :uid
+	            AND (c.checkedOut = false OR c.checkedOut IS NULL)
+	        """, Cart.class)
+	        .setParameter("uid", userId)
+	        .getSingleResult();
 
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (em.getTransaction().isActive()) em.getTransaction().rollback();
-            throw ex;
-        } finally {
-            em.close();
-        }
+	      if (cart.getItems() == null || cart.getItems().isEmpty()) {
+	        tx.rollback();
+	        return; // giỏ trống
+	      }
+
+	      Date now = new Date();
+
+	      // Mỗi CartItem -> 1 dòng Invoice (đúng schema hiện tại của bạn)
+	      for (CartItems it : cart.getItems()) {
+	        Invoice inv = new Invoice();
+	        inv.setNgayLap(now);
+	        inv.setNguoiDungID(userId);
+	        inv.setProduct(it.getProduct());
+	        inv.setSoLuong(it.getQuantity());
+	        inv.setDonGia(it.getPrice());
+	        
+	        // Nếu DB không tự tính tongTien, có thể set:
+	        // inv.setTongTien(it.getPrice().multiply(BigDecimal.valueOf(it.getQuantity())));
+
+	        em.persist(inv); // dùng cùng EM cho nhanh (thay vì gọi invoiceDao.create)
+	      }
+
+	      cart.setCheckedOut(true);
+	      em.createQuery("DELETE FROM CartItems ci WHERE ci.cart.id = :cid")
+	        .setParameter("cid", cart.getId())
+	        .executeUpdate();
+
+	      tx.commit();
+	    } catch (NoResultException e) {
+	      if (tx.isActive()) tx.rollback(); // không có cart mở
+	    } catch (Exception e) {
+	      if (tx.isActive()) tx.rollback();
+	      throw e;
+	    } finally { em.close(); }
 	}
 
 	@Override
