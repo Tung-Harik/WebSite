@@ -8,5 +8,5 @@
   
   <mapping path="/v1/api/*" name="api" exclude="true"/>
   <mapping path="/login" exclude="true"/>
-  <mapping path="/signin" exclude="true"/>
+  <mapping path="/register" exclude="true"/>
 </sitemesh>
