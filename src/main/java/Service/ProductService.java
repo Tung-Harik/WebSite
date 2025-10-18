@@ -1,7 +1,6 @@
 package Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import Entity.Product;
 
@@ -10,7 +9,7 @@ public interface ProductService {
     Product create(Product product);
 
     // READ
-    Optional<Product> findById(Integer id);
+    Product findById(Integer id);
     List<Product> findAll();
     List<Product> findAll(int page, int size); // phân trang
     long count();

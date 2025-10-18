@@ -53,7 +53,7 @@
             <div class="display-6 text-primary"><i class="bi bi-receipt"></i></div>
           </div>
           <div class="card-footer bg-transparent border-0 pt-0">
-            <a href="${pageContext.request.contextPath}/orders" class="small text-decoration-none">Xem chi tiết →</a>
+            <a href="${pageContext.request.contextPath}/user/orders" class="small text-decoration-none">Xem chi tiết →</a>
           </div>
         </div>
       </div>

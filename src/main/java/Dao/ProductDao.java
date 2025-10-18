@@ -1,13 +1,12 @@
 package Dao;
 
 import java.util.List;
-import java.util.Optional;
 
 import Entity.Product;
 
 public interface ProductDao {
     Product create(Product product);
-    Optional<Product> findById(Integer id);
+    Product findById(Integer id);
     List<Product> findAll();
     List<Product> findAll(int page, int size);
     long count();

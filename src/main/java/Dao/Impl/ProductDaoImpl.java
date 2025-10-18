@@ -1,7 +1,6 @@
 package Dao.Impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import Dao.ProductDao;
 import Entity.Product;
@@ -31,10 +30,10 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Optional<Product> findById(Integer id) {
-        EntityManager em = JPAUtil.getEm();
+    public Product findById(Integer id) {
+    	EntityManager em = JPAUtil.getEm();
         try {
-            return Optional.ofNullable(em.find(Product.class, id));
+            return em.find(Product.class, id);
         } finally {
             em.close();
         }
