@@ -10,7 +10,7 @@ public interface UserDao {
     User create(User user);
 
     // READ
-    Optional<User> findById(Integer id);
+    User findById(Integer id);
     Optional<User> findByUsername(String username);
     List<User> findAll();
     

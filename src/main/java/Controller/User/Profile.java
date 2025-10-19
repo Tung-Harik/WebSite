@@ -1,8 +1,6 @@
 package Controller.User;
 
 import java.io.IOException;
-import java.util.Optional;
-
 import Entity.User;
 import Service.UserService;
 import Service.Impl.UserServiceImpl;
@@ -26,8 +24,8 @@ public class Profile extends HttpServlet{
 		HttpSession session = req.getSession(false);
 		User current = (User)session.getAttribute("account");
 		
-		Optional<User> fresh = userService.findById(current.getId());
-        fresh.ifPresent(u -> req.setAttribute("editUser", u));
+		User fresh = userService.findById(current.getId());
+		req.setAttribute("editUser", fresh);
         
 		req.getRequestDispatcher("/views/user/profile.jsp").forward(req, resp);
 	}
@@ -41,8 +39,10 @@ public class Profile extends HttpServlet{
         User sessionUser = (User)session.getAttribute("account");
         
         try {
-        	User dbUser = userService.findById(sessionUser.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy tài khoản."));
+        	User dbUser = userService.findById(sessionUser.getId());
+        	if (dbUser == null) {
+        	    throw new IllegalArgumentException("Không tìm thấy tài khoản.");
+        	}
         	
         	String username = trim(req.getParameter("username"));
             String fullname = trim(req.getParameter("fullname"));

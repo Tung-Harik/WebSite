@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public Optional<User> findById(Integer id) {
+	public User findById(Integer id) {
 		return dao.findById(id);
 	}
 
@@ -54,14 +54,15 @@ public class UserServiceImpl implements UserService{
             throw new IllegalArgumentException("User/id must not be null");
 
         // Nếu username thay đổi, kiểm tra trùng
-        Optional<User> current = dao.findById(user.getId());
-        if (current.isEmpty()) {
+        User current = dao.findById(user.getId());
+        if (current == null) {
             throw new RuntimeException("User không tồn tại");
         }
         
         String newUsername = user.getUsername();
+        
         if (newUsername != null && !newUsername.isBlank()
-                && !newUsername.equals(current.get().getUsername())
+                && !newUsername.equals(current.getUsername())
                 && dao.existsByUsername(newUsername.trim())) {
             throw new RuntimeException("Tên đăng nhập đã tồn tại");
         }

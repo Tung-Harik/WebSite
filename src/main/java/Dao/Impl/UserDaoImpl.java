@@ -32,14 +32,14 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public Optional<User> findById(Integer id) {
+	public User findById(Integer id) {
 		EntityManager em = JPAUtil.getEm();
 		
-        try {
-            return Optional.ofNullable(em.find(User.class, id));
-        } finally {
-            em.close();
-        }
+		try {
+	        return em.find(User.class, id);
+	    } finally {
+	        em.close();
+	    }
 	}
 
 	@Override
