@@ -1,5 +1,7 @@
 package Entity;
 
+import java.util.Date;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,7 +16,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 50, unique = true)
+    @Column(nullable = false, length = 255, unique = true)
     private String username;
 
     @Column(nullable = false, length = 50)
@@ -34,4 +36,11 @@ public class User {
 
     @Column(length = 50)
     private String email;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "reset_expiry")
+    private Date resetExpiry;
+
+    @Column(name = "reset_code", length = 10)
+    private String resetCode;
 }

@@ -9,16 +9,19 @@ CREATE TABLE Role
 	roleID INT NOT NULL PRIMARY KEY,
 	name NVARCHAR(50)
 );
+
 CREATE TABLE Users
 (
 	id INT PRIMARY KEY NOT NULL IDENTITY,
 	username NVARCHAR(50) NOT NULL,
-	[password] NVARCHAR(50) NOT NULL,
+	[password] NVARCHAR(255) NOT NULL,
 	fullname NVARCHAR(50),
 	DiaChi NVARCHAR(50) NOT NULL,
 	SDT NVARCHAR(50) NOT NULL,
 	roleID INT,
 	email NVARCHAR(50),
+	reset_expiry DATETIME NULL,
+	reset_code VARCHAR(10) NULL,
 	CONSTRAINT FK_NguoiDung_Role FOREIGN KEY (roleID) REFERENCES Role(roleID)
 );
 CREATE TABLE Products
@@ -57,14 +60,6 @@ BEGIN
     JOIN Products AS p   ON p.id = i.SanPhamID;
 END;
 
-
-INSERT INTO Role VALUES (1, N'Admin');
-INSERT INTO Users(username, [password], fullname, DiaChi, SDT, roleID, email)
-VALUES ('admin', '123456', N'Lê Nghĩa Tình', N'Thủ Đức', N'0943512459', 1, 'nghiatinh2002@gmail.com');
-
-ALTER TABLE dbo.Users ALTER COLUMN password VARCHAR(255) NOT NULL;
-
-
 CREATE TABLE Cart (
     id INT PRIMARY KEY IDENTITY,
     user_id INT NOT NULL,
@@ -82,4 +77,15 @@ CREATE TABLE CartItems (
     FOREIGN KEY (cart_id) REFERENCES Cart(id),
     FOREIGN KEY (product_id) REFERENCES Products(id)
 );
+
+INSERT INTO Products VALUES
+						(1,'Áo thể chất UTE', 120000),
+						(2, 'Áo đồng phục UTE', 110000),
+						(3, 'Áo khoa CLC', 140000),
+						(4, 'Áo TN UTE', 160000),
+						(5, 'Balo UTE', 250000),
+						(6, 'Móc khóa UTE', 5000),
+						(7, 'Nón UTE', 120000),
+						(8, 'Ô UTE', 80000),
+						(9, 'Sổ tay UTE', 30000);
 

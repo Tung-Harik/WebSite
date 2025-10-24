@@ -25,4 +25,6 @@ public interface UserDao {
 
     // EXTRA
     boolean existsByUsername(String username);
+    
+    User findByEmail(String email);
 }

@@ -1,5 +1,6 @@
 package Service.Impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,6 +92,25 @@ public class UserServiceImpl implements UserService{
 	    return findByUsername(username.trim())
 	        .filter(u -> BCrypt.checkpw(password, u.getPassword()))
 	        .orElse(null);
+	}
+
+	@Override
+	public User findByEmailOrNull(String email) {
+		return dao.findByEmail(email);
+	}
+
+	@Override
+	public void setResetCode(User u, String code, Date expiry) {
+		u.setResetCode(code);
+	    u.setResetExpiry(expiry);
+	    dao.update(u);
+	}
+
+	@Override
+	public void clearResetCode(User u) {
+		u.setResetCode(null);
+	    u.setResetExpiry(null);
+	    dao.update(u);
 	}
 
 }

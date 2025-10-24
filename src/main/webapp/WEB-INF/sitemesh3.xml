@@ -9,4 +9,5 @@
   <mapping path="/v1/api/*" name="api" exclude="true"/>
   <mapping path="/login" exclude="true"/>
   <mapping path="/register" exclude="true"/>
+  <mapping path="/forgot" exclude="true"/>
 </sitemesh>

@@ -40,7 +40,7 @@
               <c:if test="${not empty cookie.rememberUser.value}">checked</c:if>>
             <label class="form-check-label" for="remember">Nhớ tôi</label>
           </div>
-          <a href="#" class="text-decoration-none small">Quên mật khẩu?</a>
+          <a href="${pageContext.request.contextPath}/forgot" class="text-decoration-none small">Quên mật khẩu?</a>
         </div>
 
         <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>

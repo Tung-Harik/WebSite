@@ -154,4 +154,18 @@ public class UserDaoImpl implements UserDao{
         }
 	}
 
+	@Override
+	public User findByEmail(String email) {
+		EntityManager em = JPAUtil.getEm();
+	    try {
+	        TypedQuery<User> query = em.createQuery(
+	            "SELECT u FROM User u WHERE u.email = :email", User.class);
+	        query.setParameter("email", email);
+	        List<User> result = query.getResultList();
+	        return result.isEmpty() ? null : result.get(0);
+	    } finally {
+	        em.close();
+	    }
+	}
+
 }

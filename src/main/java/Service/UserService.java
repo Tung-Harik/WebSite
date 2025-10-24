@@ -1,5 +1,6 @@
 package Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,4 +27,9 @@ public interface UserService {
     // EXTRA
     boolean existsByUsername(String username);
     User login(String username, String password);
+    
+    //Forgot Password
+    User findByEmailOrNull(String email);
+    void setResetCode(User u, String code, Date expiry);
+    void clearResetCode(User u);
 }
