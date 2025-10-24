@@ -4,6 +4,7 @@
   <mapping path="/user/*" name="user" decorator="user.jsp"/>
   <mapping path="/admin/*" name="admin" decorator="admin.jsp"/>
   <mapping path="/manager/*" name="manager" decorator="manager.jsp"/>
+  <mapping path="/shipper/*" name="shipper" decorator="shipper.jsp"/>
   <mapping path="/*" name="web" decorator="web.jsp"/>
   
   <mapping path="/v1/api/*" name="api" exclude="true"/>

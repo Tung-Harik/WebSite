@@ -7,6 +7,7 @@ import java.util.Optional;
 import Entity.User;
 import Service.UserService;
 import Service.Impl.UserServiceImpl;
+import Util.Passwords;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -89,10 +90,13 @@ public class UserController extends HttpServlet{
 		    session.setAttribute("flashError", "Username đã tồn tại");
 		    return;
 		}
-
-		User u = User.builder().username(username).password(password) // TODO: Hash password nếu cần (BCrypt)
+		
+		String hashed = Passwords.hash(password);
+		
+		User u = User.builder().username(username).password(hashed) // TODO: Hash password nếu cần (BCrypt)
 				.fullname(fullname).email(email).sdt(sdt).diaChi(diaChi).roleID(roleID).build();
 		userService.create(u);
+		
 		session.setAttribute("flash", "Đã tạo người dùng mới");
 	}
 

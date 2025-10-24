@@ -78,6 +78,12 @@ CREATE TABLE CartItems (
     FOREIGN KEY (product_id) REFERENCES Products(id)
 );
 
+INSERT INTO Role VALUES
+					(1, 'Manager'),
+					(2, 'Admin'),
+					(3, 'User'),
+					(4, 'Seller'),
+					(5, 'Shipper');
 INSERT INTO Products VALUES
 						(1,'Áo thể chất UTE', 120000),
 						(2, 'Áo đồng phục UTE', 110000),

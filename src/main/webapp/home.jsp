@@ -50,7 +50,7 @@
             <!-- Ảnh sản phẩm -->
             <div class="card h-100 shadow-sm border-0">
   <a class="text-decoration-none" 
-     href="${pageContext.request.contextPath}/product/detail?id=${p.id}">
+     href="${pageContext.request.contextPath}/user/product/detail?id=${p.id}">
     <img src="${pageContext.request.contextPath}/assets/img/products/${imgById[p.id]}"
          alt="${p.name}" class="card-img-top" style="height:220px;object-fit:cover;">
   </a>
@@ -58,7 +58,7 @@
   <div class="card-body text-center">
     <h6 class="card-title text-truncate" title="${p.name}">
       <a class="text-decoration-none text-dark"
-         href="${pageContext.request.contextPath}/product/detail?id=${p.id}">
+         href="${pageContext.request.contextPath}/user/product/detail?id=${p.id}">
         ${p.name}
       </a>
     </h6>
@@ -67,7 +67,7 @@
     </p>
 
     <div class="d-grid gap-2">
-      <a href="${pageContext.request.contextPath}/product/detail?id=${p.id}"
+      <a href="${pageContext.request.contextPath}/user/product/detail?id=${p.id}"
          class="btn btn-primary btn-sm">
         Xem chi tiết
       </a>

@@ -69,9 +69,18 @@
                     <td>${u.sdt}</td>
                     <td>${u.diaChi}</td>
                     <td class="text-center">
-                      <span class="badge ${u.roleID == 1 ? 'bg-primary' : (u.roleID == 2 ? 'bg-warning text-dark' : 'bg-secondary')}">
-                        ${u.roleID == 1 ? 'ADMIN' : (u.roleID == 2 ? 'MANAGER' : 'USER')}
-                      </span>
+                      <span class="badge 
+  							${u.roleID == 1 ? 'bg-danger' 
+ 								 : (u.roleID == 2 ? 'bg-warning text-dark' 
+  								 : (u.roleID == 3 ? 'bg-secondary' 
+								 : (u.roleID == 4 ? 'bg-info text-dark' 
+								 : (u.roleID == 5 ? 'bg-success' : 'bg-light text-dark'))))}">
+							${u.roleID == 1 ? 'ADMIN' 
+						 		 : (u.roleID == 2 ? 'MANAGER' 
+								 : (u.roleID == 3 ? 'USER' 
+  							     : (u.roleID == 4 ? 'SELLER' 
+                                 : (u.roleID == 5 ? 'SHIPPER' : 'UNKNOWN'))))}
+						</span>
                     </td>
                     <td class="text-end">
                       <button
@@ -150,6 +159,8 @@
             <option value="1">ADMIN</option>
             <option value="2">MANAGER</option>
             <option value="3" selected>USER</option>
+            <option value="4">SELLER</option>
+            <option value="5">SHIPPER</option>
           </select>
         </div>
       </div>

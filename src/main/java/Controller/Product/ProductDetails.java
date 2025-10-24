@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = "/product/detail")
+@WebServlet(urlPatterns = "/user/product/detail")
 public class ProductDetails extends HttpServlet{
 
 	/**
