@@ -123,61 +123,78 @@
       </div>
 
       <!-- Recent lists -->
-      <div class="col-lg-8">
-        <div class="card h-100">
-          <div class="card-header bg-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Đơn hàng gần đây</h5>
-            <a href="${pageContext.request.contextPath}/admin/orders" class="small text-decoration-none">Xem tất cả</a>
-          </div>
+			<div class="card h-100">
+				<div
+					class="card-header bg-white d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">Đơn hàng gần đây</h5>
+					<a href="${pageContext.request.contextPath}/admin/orders"
+						class="small text-decoration-none">Xem tất cả</a>
+				</div>
 
-          <div class="card-body p-0">
-            <c:choose>
-              <c:when test="${not empty requestScope.recentOrders}">
-                <div class="table-responsive">
-                  <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                      <tr>
-                        <th>#</th>
-                        <th>Khách hàng</th>
-                        <th>Ngày</th>
-                        <th>Tổng tiền</th>
-                        <th>Trạng thái</th>
-                        <th class="text-end">Thao tác</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <c:forEach var="o" items="${requestScope.recentOrders}">
-                        <tr>
-                          <td>${o.id}</td>
-                          <td>${o.customerName}</td>
-                          <td><fmt:formatDate value="${o.createdAt}" pattern="dd/MM/yyyy HH:mm"/></td>
-                          <td>
-                            <fmt:formatNumber value="${o.totalAmount}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
-                          </td>
-                          <td>
-                            <span class="badge ${o.status == 'COMPLETED' ? 'bg-success' : (o.status == 'PENDING' ? 'bg-warning' : 'bg-secondary')}">
-                              ${o.status}
-                            </span>
-                          </td>
-                          <td class="text-end">
-                            <a class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/admin/orders/detail?id=${o.id}">
-                              Chi tiết
-                            </a>
-                          </td>
-                        </tr>
-                      </c:forEach>
-                    </tbody>
-                  </table>
-                </div>
-              </c:when>
-              <c:otherwise>
-                <div class="p-4 text-center text-muted">Chưa có đơn hàng nào gần đây.</div>
-              </c:otherwise>
-            </c:choose>
-          </div>
-        </div>
+				<div class="card-body p-0">
+					<c:choose>
+						<c:when test="${not empty orders}">
+							<div class="table-responsive">
+								<table class="table table-hover align-middle mb-0">
+									<thead class="table-light text-center">
+										<tr>
+											<th>Ngày lập</th>
+											<th>Khách hàng</th>
+											<th>Địa chỉ</th>
+											<th>SĐT</th>
+											<th>Sản phẩm</th>
+											<th>SL</th>
+											<th>Đơn giá</th>
+											<th>Tổng tiền</th>
+											<th>Ghi chú</th>
+											<th class="text-end">Thao tác</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="o" items="${orders}">
+											<tr class="text-center">
+												<td><fmt:formatDate value="${o.ngayLap}"
+														pattern="dd/MM/yyyy HH:mm" /></td>
 
-        <!-- Recent products -->
+												<td>${o.user.fullname}</td>
+												<td>${o.user.diaChi}</td>
+												<td>${o.user.sdt}</td>
+
+												<!-- Sản phẩm & số lượng -->
+												<td>${o.product.name}</td>
+												<td>${o.soLuong}</td>
+
+												<!-- Giá & tổng tiền -->
+												<td><fmt:formatNumber value="${o.donGia}"
+														type="currency" currencySymbol="₫" maxFractionDigits="0" />
+												</td>
+												<td><fmt:formatNumber
+														value="${empty o.tongTien ? o.soLuong * o.donGia : o.tongTien}"
+														type="currency" currencySymbol="₫" maxFractionDigits="0" />
+												</td>
+
+												<td class="text-truncate" style="max-width: 200px;"
+													title="${o.ghiChu}">${o.ghiChu}</td>
+
+												<td class="text-end"><a
+													class="btn btn-sm btn-outline-primary"
+													href="${pageContext.request.contextPath}/admin/orders/detail?id=${o.id}">
+														Chi tiết </a></td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="p-4 text-center text-muted">Chưa có đơn hàng
+								nào gần đây.</div>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
+
+			<!-- Recent products -->
         <div class="card h-100 mt-4">
           <div class="card-header bg-white d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Sản phẩm mới thêm</h5>

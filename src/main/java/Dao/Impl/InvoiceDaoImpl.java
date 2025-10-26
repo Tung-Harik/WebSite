@@ -132,9 +132,13 @@ public class InvoiceDaoImpl implements InvoiceDao {
         EntityManager em = JPAUtil.getEm();
         try {
             TypedQuery<Invoice> query = em.createQuery(
-                "SELECT i FROM Invoice i WHERE i.ngayLap BETWEEN :s AND :e", Invoice.class);
-            query.setParameter("s", start);
-            query.setParameter("e", end);
+            		"SELECT i FROM Invoice i " +
+            	            "JOIN FETCH i.user u " +
+            	            "JOIN FETCH i.product p " +
+            	            "WHERE i.ngayLap >= :start AND i.ngayLap < :end " +
+            	            "ORDER BY i.id DESC", Invoice.class);
+            	        query.setParameter("start", start);
+            	        query.setParameter("end", end);
             return query.getResultList();
         } finally {
             em.close();
@@ -156,6 +160,21 @@ public class InvoiceDaoImpl implements InvoiceDao {
 	                 .getSingleResult();
 	    } catch (NoResultException e) {
 	        return null;
+	    } finally {
+	        em.close();
+	    }
+	}
+
+	@Override
+	public void updateGhiChu(int id, String newStatus) {
+		EntityManager em = JPAUtil.getEm();
+	    try {
+	        em.getTransaction().begin();
+	        Invoice invoice = em.find(Invoice.class, id);
+	        if (invoice != null) {
+	            invoice.setGhiChu(newStatus);
+	        }
+	        em.getTransaction().commit();
 	    } finally {
 	        em.close();
 	    }

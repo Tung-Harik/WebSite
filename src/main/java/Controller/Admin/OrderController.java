@@ -39,8 +39,8 @@ public class OrderController extends HttpServlet{
 
         // Gọi DAO để lấy các hóa đơn trong ngày hôm nay
         List<Invoice> todayOrders = invoiceService.findByDateRange(startOfDay, endOfDay);
-
         req.setAttribute("orders", todayOrders);
+        
         req.getRequestDispatcher("/views/admin/orders.jsp").forward(req, resp);
 	}
 }

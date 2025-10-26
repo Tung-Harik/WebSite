@@ -26,6 +26,10 @@ public class Invoice {
     @Column(name = "NguoiDungID", nullable = false)
     private int nguoiDungID;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "NguoiDungID", insertable = false, updatable = false)
+    private User user;
+    
     // Liên kết với Product
     @ManyToOne
     @JoinColumn(name = "SanPhamID", nullable = false)

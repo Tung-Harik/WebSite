@@ -27,4 +27,5 @@ public interface InvoiceService {
     List<Invoice> findByDateRange(Date startDate, Date endDate); // tìm trong khoảng ngày
     
     Invoice getByIdAndUserOrNull(int invoiceId, int userId);
+    void updateGhiChu (int id, String newStatus);
 }

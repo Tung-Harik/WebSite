@@ -168,4 +168,16 @@ public class UserDaoImpl implements UserDao{
 	    }
 	}
 
+	@Override
+	public List<User> findByNameLike(String name) {
+		EntityManager em = JPAUtil.getEm();
+        try {
+            return em.createQuery("SELECT u FROM User u WHERE LOWER(u.fullname) LIKE :kw", User.class)
+                     .setParameter("kw", "%" + name.toLowerCase() + "%")
+                     .getResultList();
+        } finally {
+            em.close();
+        }
+	}
+
 }

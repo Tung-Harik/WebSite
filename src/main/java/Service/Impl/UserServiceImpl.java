@@ -113,4 +113,9 @@ public class UserServiceImpl implements UserService{
 	    dao.update(u);
 	}
 
+	@Override
+	public List<User> findByNameLike(String name) {
+		return dao.findByNameLike(name);
+	}
+
 }

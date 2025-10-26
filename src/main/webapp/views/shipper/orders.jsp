@@ -44,11 +44,7 @@
   <!-- Bộ lọc nhanh -->
   <div class="card mb-4">
     <div class="card-body">
-      <form class="row g-3 align-items-end" action="${ctx}/shipper/orders" method="get">
-        <div class="col-sm-4 col-md-3">
-          <label class="form-label">Tìm kiếm</label>
-          <input type="text" name="q" value="${param.q}" class="form-control" placeholder="Tên KH / Mã đơn / Sản phẩm..." />
-        </div>
+      <form class="row g-3 align-items-end" action="${ctx}/shipper/orders" method="post">
         <div class="col-sm-4 col-md-3">
           <label class="form-label">Từ ngày</label>
           <input type="date" name="from" value="${param.from}" class="form-control" />

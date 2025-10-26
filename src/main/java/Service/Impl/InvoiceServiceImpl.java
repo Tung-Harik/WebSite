@@ -62,4 +62,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 	public Invoice getByIdAndUserOrNull(int invoiceId, int userId) {
 		return invoiceDao.getByIdAndUserOrNull(invoiceId, userId);
 	}
+
+	@Override
+	public void updateGhiChu(int id, String newStatus) {
+		invoiceDao.updateGhiChu(id, newStatus);
+	}
 }

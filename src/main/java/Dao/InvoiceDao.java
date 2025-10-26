@@ -18,4 +18,5 @@ public interface InvoiceDao {
     List<Invoice> findByDateRange(Date startDate, Date endDate);
     
     Invoice getByIdAndUserOrNull(int invoiceId, int userId);
+    void updateGhiChu (int id, String newStatus);
 }

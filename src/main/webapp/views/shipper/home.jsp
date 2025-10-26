@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -11,12 +12,7 @@
 </head>
 
 <body class="bg-body-tertiary">
-
-
-  <!-- Main content -->
   <main class="container my-4 my-md-5">
-
-    <!-- Alerts -->
     <c:if test="${not empty requestScope.success}">
       <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i>${requestScope.success}</div>
     </c:if>
@@ -24,7 +20,6 @@
       <div class="alert alert-danger"><i class="bi bi-x-circle me-2"></i>${requestScope.error}</div>
     </c:if>
 
-    <!-- Quick stats -->
     <section class="row g-4 mb-4">
       <div class="col-12 col-md-4">
         <div class="card h-100 border-0 shadow-sm">
@@ -63,7 +58,6 @@
       </div>
     </section>
 
-    <!-- Danh sách đơn hàng -->
     <section class="card border-0 shadow-sm mb-4">
       <div class="card-header bg-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Danh sách đơn hàng cần giao</h5>
@@ -72,51 +66,80 @@
 
       <div class="card-body p-0">
         <c:choose>
-          <c:when test="${not empty requestScope.orders}">
+          <c:when test="${not empty orders}">
             <div class="table-responsive">
               <table class="table table-hover mb-0 align-middle">
                 <thead class="table-light">
                   <tr>
-                    <th scope="col">Mã đơn</th>
                     <th scope="col">Khách hàng</th>
                     <th scope="col">Địa chỉ giao</th>
+                    <th scope="col">SĐT</th>
                     <th scope="col">Giá trị</th>
                     <th scope="col">Trạng thái</th>
                     <th scope="col" class="text-center">Hành động</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <c:forEach var="order" items="${requestScope.orders}">
+                  <c:forEach var="order" items="${orders}">
                     <tr>
-                      <td>#${order.id}</td>
-                      <td>${order.customerName}</td>
-                      <td>${order.address}</td>
-                      <td>
-                        <fmt:formatNumber value="${order.total}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
-                      </td>
                       <td>
                         <c:choose>
-                          <c:when test="${order.status eq 'Đang giao'}">
-                            <span class="badge text-bg-warning">${order.status}</span>
-                          </c:when>
-                          <c:when test="${order.status eq 'Hoàn thành'}">
-                            <span class="badge text-bg-success">${order.status}</span>
-                          </c:when>
-                          <c:when test="${order.status eq 'Hủy'}">
-                            <span class="badge text-bg-danger">${order.status}</span>
-                          </c:when>
-                          <c:otherwise>
-                            <span class="badge text-bg-secondary">${order.status}</span>
-                          </c:otherwise>
+                          <c:when test="${not empty order.user and not empty order.user.fullname}">${order.user.fullname}</c:when>
+                          <c:otherwise>Khách lẻ</c:otherwise>
                         </c:choose>
                       </td>
+
+                      <td>
+                        <c:choose>
+                          <c:when test="${not empty order.user and not empty order.user.diaChi}">${order.user.diaChi}</c:when>
+                          <c:otherwise>—</c:otherwise>
+                        </c:choose>
+                      </td>
+
+                      <td>
+                        <c:choose>
+                          <c:when test="${not empty order.user and not empty order.user.sdt}">${order.user.sdt}</c:when>
+                          <c:otherwise>—</c:otherwise>
+                        </c:choose>
+                      </td>
+
+                      <td>
+                        <fmt:formatNumber
+                          value="${empty order.tongTien ? (order.soLuong * order.donGia) : order.tongTien}"
+                          type="currency" currencySymbol="₫" maxFractionDigits="0"/>
+                      </td>
+
+                      <td>
+                        <c:choose>
+                          <c:when test="${empty order.ghiChu}"><span class="badge text-bg-warning">Đang giao</span></c:when>
+                          <c:when test="${order.ghiChu eq 'Đang giao'}"><span class="badge text-bg-warning">${order.ghiChu}</span></c:when>
+                          <c:when test="${order.ghiChu eq 'Hoàn thành'}"><span class="badge text-bg-success">${order.ghiChu}</span></c:when>
+                          <c:when test="${order.ghiChu eq 'Hủy'}"><span class="badge text-bg-danger">${order.ghiChu}</span></c:when>
+                          <c:otherwise><span class="badge text-bg-secondary">${order.ghiChu}</span></c:otherwise>
+                        </c:choose>
+                      </td>
+
                       <td class="text-center">
-                        <a href="${pageContext.request.contextPath}/shipper/order/detail?id=${order.id}" class="btn btn-sm btn-outline-primary">
-                          <i class="bi bi-eye"></i>
-                        </a>
-                        <a href="${pageContext.request.contextPath}/shipper/order/update?id=${order.id}" class="btn btn-sm btn-outline-success">
-                          <i class="bi bi-pencil"></i>
-                        </a>
+                        <c:choose>
+                          <c:when test="${order.ghiChu eq 'Hoàn thành'}">
+                            <button type="button" class="btn btn-sm btn-success" disabled title="Đơn đã giao xong">
+                              <i class="bi bi-check2-circle me-1"></i> Đã giao
+                            </button>
+                          </c:when>
+                          <c:when test="${order.ghiChu eq 'Hủy'}">
+                            <button type="button" class="btn btn-sm btn-success" disabled title="Đơn đã hủy">
+                              <i class="bi bi-check2-circle me-1"></i> Đã hủy
+                            </button>
+                          </c:when>
+                          <c:otherwise>
+                            <form action="${pageContext.request.contextPath}/shipper/order/complete" method="post" class="d-inline">
+                              <input type="hidden" name="id" value="${order.id}" />
+                              <button type="submit" class="btn btn-sm btn-success">
+                                <i class="bi bi-check2-circle me-1"></i> Giao thành công
+                              </button>
+                            </form>
+                          </c:otherwise>
+                        </c:choose>
                       </td>
                     </tr>
                   </c:forEach>
@@ -131,7 +154,6 @@
       </div>
     </section>
 
-    <!-- Hoạt động gần đây -->
     <section class="card border-0 shadow-sm">
       <div class="card-header bg-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Hoạt động gần đây</h5>
@@ -159,7 +181,6 @@
         </c:choose>
       </div>
     </section>
-
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

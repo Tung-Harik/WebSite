@@ -12,6 +12,8 @@ public interface UserDao {
     // READ
     User findById(Integer id);
     Optional<User> findByUsername(String username);
+    List<User> findByNameLike(String name);
+    
     List<User> findAll();
     
     List<User> findAll(int page, int size); // phân trang

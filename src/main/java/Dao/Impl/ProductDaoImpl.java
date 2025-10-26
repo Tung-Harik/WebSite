@@ -53,7 +53,9 @@ public class ProductDaoImpl implements ProductDao {
     public List<Product> findAll(int page, int size) {
         EntityManager em = JPAUtil.getEm();
         try {
-            TypedQuery<Product> query = em.createQuery("SELECT p FROM Product p", Product.class);
+            TypedQuery<Product> query = em.createQuery(
+                "SELECT p FROM Product p ORDER BY p.id ASC", Product.class
+            );
             query.setFirstResult((page - 1) * size);
             query.setMaxResults(size);
             return query.getResultList();

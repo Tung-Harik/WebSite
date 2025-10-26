@@ -26,10 +26,11 @@ CREATE TABLE Users
 );
 CREATE TABLE Products
 (
-	id INT PRIMARY KEY NOT NULL,
+	id INT PRIMARY KEY NOT NULL IDENTITY,
 	name NVARCHAR(50) NOT NULL,
 	prices DECIMAL(18,2) NOT NULL CHECK (prices >= 0)
 );
+
 CREATE TABLE Invoices (
     MaHD INT IDENTITY PRIMARY KEY,             -- Mã hóa đơn tự tăng
     NgayLap DATETIME NOT NULL DEFAULT GETDATE(), -- Ngày lập hóa đơn
@@ -85,13 +86,13 @@ INSERT INTO Role VALUES
 					(4, 'Seller'),
 					(5, 'Shipper');
 INSERT INTO Products VALUES
-						(1,'Áo thể chất UTE', 120000),
-						(2, 'Áo đồng phục UTE', 110000),
-						(3, 'Áo khoa CLC', 140000),
-						(4, 'Áo TN UTE', 160000),
-						(5, 'Balo UTE', 250000),
-						(6, 'Móc khóa UTE', 5000),
-						(7, 'Nón UTE', 120000),
-						(8, 'Ô UTE', 80000),
-						(9, 'Sổ tay UTE', 30000);
+						('Áo thể chất UTE', 120000),
+						('Áo đồng phục UTE', 110000),
+						('Áo khoa CLC', 140000),
+						('Áo TN UTE', 160000),
+						('Balo UTE', 250000),
+						('Móc khóa UTE', 5000),
+						('Nón UTE', 120000),
+						('Ô UTE', 80000),
+						('Sổ tay UTE', 30000);
 

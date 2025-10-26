@@ -14,7 +14,7 @@
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="h4 mb-0">ĐƠN HÀNG NGÀY HÔM NAY</h2>
-    <a href="${pageContext.request.contextPath}/admin/dashboard" class="btn btn-outline-secondary btn-sm">← Trang chủ admin</a>
+    <a href="${pageContext.request.contextPath}/admin/home" class="btn btn-outline-secondary btn-sm">← Trang chủ admin</a>
   </div>
 
   <c:choose>
@@ -27,9 +27,11 @@
       <table class="table table-hover align-middle shadow-sm bg-white rounded">
         <thead class="table-light text-center">
           <tr>
-            <th>Mã HD</th>
             <th>Ngày lập</th>
-            <th>Người dùng</th>
+            <th>ID người dùng</th>
+            <th>Tên người dùng</th>
+            <th>Địa chỉ</th>
+            <th>SĐT</th>
             <th>Sản phẩm</th>
             <th>Số lượng</th>
             <th>Đơn giá</th>
@@ -40,9 +42,11 @@
         <tbody>
           <c:forEach var="o" items="${orders}">
             <tr class="text-center">
-              <td>${o.id}</td>
               <td><fmt:formatDate value="${o.ngayLap}" pattern="dd/MM/yyyy HH:mm"/></td>
               <td>${o.nguoiDungID}</td>
+              <td>${o.user.fullname}</td>
+			  <td>${o.user.diaChi}</td>
+			  <td>${o.user.sdt}</td>
               <td>${o.product.name}</td>
               <td>${o.soLuong}</td>
               <td><fmt:formatNumber value="${o.donGia}" type="currency" currencySymbol="₫" maxFractionDigits="0"/></td>
