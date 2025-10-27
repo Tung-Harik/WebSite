@@ -1,14 +1,17 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
-
+<meta charset="UTF-8">
+<title>Insert title here</title>
 </head>
-<body class="bg-body-tertiary">
-
-	<!-- Nội dung trang con -->
-  <sitemesh:write property="body"/>
-
+<body>
+	<%@include file="/commons/guest/header.jsp" %>
+	
+	<sitemesh:write property="body" />
+	
+	<%@include file="/commons/guest/footer.jsp" %>
 </body>
 </html>

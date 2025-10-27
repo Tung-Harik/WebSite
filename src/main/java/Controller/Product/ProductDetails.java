@@ -1,8 +1,6 @@
 package Controller.Product;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import Service.ProductService;
 import Entity.Product;
@@ -12,8 +10,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
-@WebServlet(urlPatterns = "/user/product/detail")
+@WebServlet(urlPatterns = {"/user/product/detail", "/guest/product/detail", "/product/detail"})
 public class ProductDetails extends HttpServlet{
 
 	/**
@@ -24,40 +23,58 @@ public class ProductDetails extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String idStr = req.getParameter("id");
+		HttpSession session = req.getSession(false);
+        Object account = (session != null) ? session.getAttribute("account") : null;
+
+        // Nếu chưa đăng nhập mà đi vào /user/..., thì chuyển hướng sang /guest/product/detail
+        String servletPath = req.getServletPath();
+        if (account == null && servletPath.startsWith("/user/")) {
+            String id = req.getParameter("id");
+            resp.sendRedirect(req.getContextPath() + "/guest/product/detail?id=" + id);
+            return;
+        }
+
+        // --- 2️⃣ Lấy id sản phẩm ---
+        String idStr = req.getParameter("id");
         if (idStr == null || idStr.isEmpty()) {
-            resp.sendRedirect(req.getContextPath() + "/home");
+            resp.sendRedirect(req.getContextPath() + "/trangchu");
             return;
         }
 
         try {
             int id = Integer.parseInt(idStr);
-            Product p = productService.findById(id);
-            if (p == null) {
-                resp.sendRedirect(req.getContextPath() + "/home");
+            Product product = productService.findById(id);
+            if (product == null) {
+                req.setAttribute("error", "Không tìm thấy sản phẩm.");
+                req.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
                 return;
             }
 
-            // Map ID → ảnh
-            Map<Integer, String> imgById = new HashMap<>();
-            imgById.put(1, "Áo thể chất.png");
-            imgById.put(2, "Áo đồng phục UTE.png");
-            imgById.put(3, "Áo khoa CLC.png");
-            imgById.put(4, "Áo TN UTE.png");
-            imgById.put(5, "balo UTE.jpg");
-            imgById.put(6, "móc khóa UTE.jpg");
-            imgById.put(7, "Nón UTE.jpg");
-            imgById.put(8, "Ô UTE.jpg");
-            imgById.put(9, "sổ tay UTE.jpg");
+            // --- 3️⃣ Map ảnh cho sản phẩm ---
+            String imageName = switch (id) {
+                case 1 -> "Áo thể chất.png";
+                case 2 -> "Áo đồng phục UTE.png";
+                case 3 -> "Áo khoa CLC.png";
+                case 4 -> "Áo TN UTE.png";
+                case 5 -> "balo UTE.jpg";
+                case 6 -> "móc khóa UTE.jpg";
+                case 7 -> "Nón UTE.jpg";
+                case 8 -> "Ô UTE.jpg";
+                case 9 -> "sổ tay UTE.jpg";
+                default -> "noimage.jpg";
+            };
 
-            String imageName = imgById.getOrDefault(id, "Áo TN UTE.png");
+            req.setAttribute("imgFile", imageName);
+            req.setAttribute("product", product);
 
-            req.setAttribute("product", p);
-            req.setAttribute("imageName", imageName);
-            req.getRequestDispatcher("/views/products/product-details.jsp")
-               .forward(req, resp);
+            // --- 4️⃣ Chuyển sang view phù hợp ---
+            String view = "/views/products/product-details.jsp";
+
+
+            req.getRequestDispatcher(view).forward(req, resp);
+
         } catch (NumberFormatException e) {
-            resp.sendRedirect(req.getContextPath() + "/home");
+            resp.sendRedirect(req.getContextPath() + "/trangchu");
         }
 	}
 }
