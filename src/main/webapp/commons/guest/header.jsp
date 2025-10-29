@@ -14,7 +14,7 @@
     </button>
 
     <div id="navMain" class="collapse navbar-collapse">
-      <form class="d-flex ms-lg-3 my-3 my-lg-0" action="${ctx}/guest/home" method="get">
+      <form class="d-flex ms-lg-3 my-3 my-lg-0" action="${ctx}/trangchu" method="get">
         <input class="form-control me-2" name="q" type="search" placeholder="Tìm sản phẩm..." />
         <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
       </form>

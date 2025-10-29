@@ -25,22 +25,38 @@ public class TrangChu extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		 // 1) Tham số phân trang
+		
+		String q = trimToNull(req.getParameter("q"));
+
         int page = parseIntOrDefault(req.getParameter("page"), 1);
         int size = parseIntOrDefault(req.getParameter("size"), 8);
         if (size <= 0) size = 8;
 
-        // 2) Tổng bản ghi & tổng trang
-        long totalItems = productService.count();
-        int totalPages = (int) Math.ceil(totalItems / (double) size);
-        if (totalPages == 0) totalPages = 1;
-        if (page > totalPages) page = totalPages;
-        if (page < 1) page = 1;
+        long totalItems;
+        int totalPages;
+        List<Product> products;
 
-        // 3) Lấy dữ liệu theo trang
-        List<Product> products = productService.findAll(page, size);
+        if (q != null) {
+            // Nhánh tìm kiếm
+            totalItems = productService.countByNameContaining(q);
+            totalPages = (int) Math.ceil(totalItems / (double) size);
+            if (totalPages == 0) totalPages = 1;
+            if (page > totalPages) page = totalPages;
+            if (page < 1) page = 1;
 
-        // 4) Map ảnh theo id (dựa đúng tên file bạn có trong webapp/assets/img/products)
+            products = productService.findByNameContaining(q, page, size);
+        } else {
+            // Nhánh danh sách tất cả
+            totalItems = productService.count();
+            totalPages = (int) Math.ceil(totalItems / (double) size);
+            if (totalPages == 0) totalPages = 1;
+            if (page > totalPages) page = totalPages;
+            if (page < 1) page = 1;
+
+            products = productService.findAll(page, size);
+        }
+
+        // Map ảnh theo id (giữ y nguyên như bạn có)
         Map<Integer, String> imgById = new HashMap<>();
         for (Product p : products) {
             String imageName = switch (p.getId()) {
@@ -58,19 +74,26 @@ public class TrangChu extends HttpServlet{
             imgById.put(p.getId(), imageName);
         }
 
-        // 5) Gắn attribute & đường phân trang
         req.setAttribute("products", products);
         req.setAttribute("imgById", imgById);
         req.setAttribute("page", page);
         req.setAttribute("size", size);
         req.setAttribute("totalItems", totalItems);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("listPath", req.getServletPath()); // = "/trangchu"
+        req.setAttribute("q", q);                           // giữ lại từ khoá để hiển thị
+        req.setAttribute("listPath", req.getServletPath()); // "/trangchu"
+
 
         req.getRequestDispatcher("/trangchu.jsp").forward(req, resp);
 	}
 	
 	private int parseIntOrDefault(String s, int def) {
         try { return Integer.parseInt(s); } catch (Exception e) { return def; }
+    }
+	
+	private String trimToNull(String s) {
+        if (s == null) return null;
+        String t = s.trim();
+        return t.isEmpty() ? null : t;
     }
 }

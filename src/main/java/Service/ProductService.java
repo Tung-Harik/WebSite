@@ -21,5 +21,6 @@ public interface ProductService {
     boolean deleteById(Integer id);
 
     // EXTRA
-    List<Product> findByNameContaining(String keyword); // tìm theo tên gần đúng
+    List<Product> findByNameContaining(String keyword, int page, int size);
+    long countByNameContaining(String keyword);
 }

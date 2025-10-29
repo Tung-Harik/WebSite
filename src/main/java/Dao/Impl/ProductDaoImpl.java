@@ -118,7 +118,7 @@ public class ProductDaoImpl implements ProductDao {
         EntityManager em = JPAUtil.getEm();
         try {
             TypedQuery<Product> query = em.createQuery(
-                "SELECT p FROM Product p WHERE p.name LIKE :kw", Product.class);
+            	"SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(:kw)", Product.class);
             query.setParameter("kw", "%" + keyword + "%");
             return query.getResultList();
         } finally {
